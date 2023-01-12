@@ -1,8 +1,6 @@
 from abc import ABC
 import numpy as np
 import pandas as pd
-#import sys
-#sys.path.append("..")
 from dao.dao import *
 from dao.etapa_dao import Etapa_DAO
 from dao.empresa_dao import Empresa_DAO

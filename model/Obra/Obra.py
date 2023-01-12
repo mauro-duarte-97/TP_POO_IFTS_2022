@@ -5,7 +5,7 @@ class Obra():
        
         self.entorno = entorno
         self.nombre = nombre
-        self.etapa = etapa
+        self.etapa = "Proyecto"
         self.tipo_obra = tipo_obra
         self.area_responsable = area_responsable
         self.descripcion = descripcion
