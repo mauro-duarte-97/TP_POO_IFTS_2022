@@ -132,21 +132,21 @@ class Main(ABC):
             elif opcion == "2":
         #6  
                 while True:
+                    obj_obra_dao = Obra_DAO()
                     obj_empresa_dao = Empresa_DAO()
+                    id = str(input("Ingrese el id de la obra a adjudicar: "))
+                    obj_obra_model = obj_obra_dao.obtener_registro(id)
                     cuit = str(input("Ingrese cuit: "))
-                    razon_social = str(input("Ingrese razon social: "))
-                    nro_expediente = "2018-604-MDUYTGC"#str(input("Ingrese un nro de expediente: "))
-                    id_empresa = 0
-                    empresa = GestionarModelo.nueva_empresa(cuit, razon_social)
-                    obj_empresa_dao.obtener_registro(cuit)
-                    if (obj_empresa_dao.obtener_registro(cuit) == 0):
-                        id_empresa = int(tipo[0])
+                    row = obj_empresa_dao.obtener_registro_desde_csv(cuit)
+                    print(row)
+                    if (row == 0):
+                        print("La empresa seleccionada no existe en la BD, si es una nueva porfavor ingresela")
+                        razon_social = str(input("Ingrese razon social: "))
+                        nro_expediente = "2018-604-MDUYTGC"#str(input("Ingrese un nro de expediente: "))
+                        empresa = GestionarModelo.nueva_empresa(cuit, razon_social)
                         obj_empresa_dao.insertar_registro(empresa)
-                    if id_empresa > 0:
-                        obj_obra_model.adjudicar_obra(empresa, nro_expediente)
-                        break
-                    else:
-                        print("La empresa seleccionada no existe en la BD, si es una nueva porfavor ingresela de nuevo")
+                    obj_obra_model.adjudicar_obra(empresa, nro_expediente)
+                    break
 
             elif opcion == "3":
         #7       
@@ -251,4 +251,4 @@ class Main(ABC):
                 obj_obra_dao.obras_fin_24meses_o_Menos()
         
 
-            fin = input("Desea seguir en la app? Si/No: S/N")
+            fin = input("Desea seguir en la app? Si/No (S/N): ")

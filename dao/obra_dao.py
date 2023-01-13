@@ -113,10 +113,10 @@ class Obra_DAO(DAO):
     def seleccionar_registro(self, objeto):
         try:
             db, cursor = self.conectar_bd()
-            cursor.execute(f"SELECT * FROM {self.nombre_tabla} WHERE descripcion='{objeto.descripcion}'")
+            cursor.execute(f"SELECT * FROM {self.nombre_tabla} WHERE id='{objeto.id}'")
             print(cursor.fetchone())
         except Exception as e:
-            print(f"Ocurrió un error al seleccionar el registro correspondiente a la obra={objeto.descripcion}. {e}")
+            print(f"Ocurrió un error al seleccionar el registro correspondiente a la obra={objeto.id}. {e}")
         finally:
             db.close()
     
@@ -133,7 +133,7 @@ class Obra_DAO(DAO):
     def eliminar_registro(self, objeto):
         try:
             db, cursor = self.conectar_bd()
-            cursor.execute(f"DELETE FROM {self.nombre_tabla} WHERE descripcion='{objeto.descripcion}'", )
+            cursor.execute(f"DELETE FROM {self.nombre_tabla} WHERE id ='{objeto.id}'", )
             # Guardar (commit) los cambios
             db.commit()
             print(f"El registro correspondiente a la obra {objeto.descripcion} se ha eliminado correctamente")
@@ -145,7 +145,7 @@ class Obra_DAO(DAO):
     def modificar_registro(self, objeto):
         try:
             db, cursor = self.conectar_bd()
-            cursor.execute(f"UPDATE {self.nombre_tabla} SET razon_social='{objeto.razon_social}' WHERE cuit='{objeto.cuit}'", )
+            cursor.execute(f"UPDATE {self.nombre_tabla} SET id_empresa ='{objeto.id}' WHERE id='{self.id}'",)
             # Guardar (commit) los cambios
             db.commit()
             print(f"Los datos correspondientes a la obra {objeto.descripcion} se ha actualizado correctamente")
@@ -164,10 +164,10 @@ class Obra_DAO(DAO):
         finally:
             db.close()
     
-    def obtener_registro(self, objeto):
+    def obtener_registro(self, id):
         try:
             db, cursor = self.conectar_bd()
-            cursor.execute(f"SELECT * FROM {self.nombre_tabla} WHERE descripcion='{objeto.descripcion}'")
+            cursor.execute(f"SELECT * FROM {self.nombre_tabla} WHERE id ='{id}'")
             return cursor.fetchone()
         except Exception as e:
             #print(f"Ocurrió un error al seleccionar el registro correspondiente a la obra={objeto.descripcion}. {e}")
