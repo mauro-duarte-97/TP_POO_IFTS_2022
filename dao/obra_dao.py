@@ -198,14 +198,12 @@ class Obra_DAO(DAO):
         tipo_obra = TipoObra_DAO()
         registros = tipo_obra.seleccionar_todos_registros()
 
-
 #C
     def cantidad_obras_x_etapa(self):
         db, cursor = self.conectar_bd()
         cursor.execute(''' SELECT id_etapa, count(*) FROM obras GROUP by id_etapa ''')
         print(f"La cantidad de obras por etapa: {cursor.fetchall()}")
         db.close()
-
 
 #D  
     def cantidad_obras_x_tipo_obra(self):

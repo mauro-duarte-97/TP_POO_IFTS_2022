@@ -132,25 +132,35 @@ class Main(ABC):
             elif opcion == "2":
         #6  
                 while True:
-                    obj_obra_dao = Obra_DAO()
                     obj_empresa_dao = Empresa_DAO()
+                    obj_obra_dao = Obra_DAO()
                     id = str(input("Ingrese el id de la obra a adjudicar: "))
-                    obj_obra_model = obj_obra_dao.obtener_registro(id)
+                    tupla_obra_model = obj_obra_dao.obtener_registro(id)
+                    obj_obra_model = Obra(tupla_obra_model[1],tupla_obra_model[2], tupla_obra_model[3], tupla_obra_model[4], tupla_obra_model[5], tupla_obra_model[6], tupla_obra_model[7], tupla_obra_model[8], tupla_obra_model[9], tupla_obra_model[10], tupla_obra_model[11])
                     cuit = str(input("Ingrese cuit: "))
                     row = obj_empresa_dao.obtener_registro_desde_csv(cuit)
-                    print(row)
                     if (row == 0):
                         print("La empresa seleccionada no existe en la BD, si es una nueva porfavor ingresela")
                         razon_social = str(input("Ingrese razon social: "))
                         nro_expediente = "2018-604-MDUYTGC"#str(input("Ingrese un nro de expediente: "))
                         empresa = GestionarModelo.nueva_empresa(cuit, razon_social)
                         obj_empresa_dao.insertar_registro(empresa)
-                    obj_obra_model.adjudicar_obra(empresa, nro_expediente)
+                        obj_obra_model.adjudicar_obra(empresa, nro_expediente)
+                    else:
+                        nro_expediente = "2018-604-MDUYTGC"#str(input("Ingrese un nro de expediente: "))
+                        razon_social = row[2]
+                        empresa = GestionarModelo.nueva_empresa(cuit, razon_social)
+                        obj_obra_model.adjudicar_obra(empresa, nro_expediente)
                     break
 
             elif opcion == "3":
-        #7       
+        #7      
                 obj_fuente_financiamiento_dao = FuenteFinanciamiento_DAO()
+                id_fuente_financiamiento = 0
+                obj_obra_dao = Obra_DAO()
+                id = str(input("Ingrese el id de la obra a iniciar: "))
+                tupla_obra_model = obj_obra_dao.obtener_registro(id)
+                obj_obra_model = Obra(tupla_obra_model[1],tupla_obra_model[2], tupla_obra_model[3], tupla_obra_model[4], tupla_obra_model[5], tupla_obra_model[6], tupla_obra_model[7], tupla_obra_model[8], tupla_obra_model[9], tupla_obra_model[10], tupla_obra_model[11])
                 destacada = bool(input("¿la obra es destacada Si/No (S/N): "))
                 if destacada == "S" or destacada == "s":
                     destacada = True
@@ -161,9 +171,9 @@ class Main(ABC):
                 fecha_fin = str(input("ingrese fecha de fin d/m/Y H:M: "))
                 fecha_fin = datetime.strptime(fecha_fin, "%d/%m/%Y %H:%M")
                 mano_obra = int(input("Ingrese la cantidad de mano de obra: "))
-                financiamiento = "Nación"#str(input("Ingrese fuente financiamiento: "))        
+                financiamiento = "Nación"#str(input("Ingrese fuente financiamiento: "))
+                obj_fuente_financiamiento_model = 0      
                 while True:
-                
                     for tipo in obj_fuente_financiamiento_dao.obtener_registros():
                         if (tipo[1] == financiamiento):
                             id_fuente_financiamiento = int(tipo[0])
@@ -174,16 +184,26 @@ class Main(ABC):
                     else:
                         print("La fuente financiamiento seleccionada no existe en la BD")
                 obj_obra_model.iniciar_obra(destacada, fecha_inicio, fecha_fin, obj_fuente_financiamiento_model, mano_obra)
-
+                print(obj_obra_model.destacada, obj_obra_model.fecha_inicio, obj_obra_model.fecha_fin_inicial, obj_obra_model.mano_obra)
             elif opcion == "4":
-        #8              
+        #8      
+                obj_obra_dao = Obra_DAO()
+                id = str(input("Ingrese el id de la obra a seleccionar: "))
+                tupla_obra_model = obj_obra_dao.obtener_registro(id)
+                obj_obra_model = Obra(tupla_obra_model[1],tupla_obra_model[2], tupla_obra_model[3], tupla_obra_model[4], tupla_obra_model[5], tupla_obra_model[6], tupla_obra_model[7], tupla_obra_model[8], tupla_obra_model[9], tupla_obra_model[10], tupla_obra_model[11])
+                   
                 inc_porc_avanze = str(input("Desea incrementar el porcentaje de avanze de la obra? S/N (Si o No): "))
                 if inc_porc_avanze == "S" or inc_porc_avanze  =="s":
                     porc_incremento = int(input("Ingrese el porcentaje de avance: "))
                     obj_obra_model.actualizar_porcentaje_avance(porc_incremento)
+                    print(obj_obra_model.porcentaje_avance)
 
             elif opcion == "5":
         #9
+                obj_obra_dao = Obra_DAO()
+                id = str(input("Ingrese el id de la obra a seleccionar: "))
+                tupla_obra_model = obj_obra_dao.obtener_registro(id)
+                obj_obra_model = Obra(tupla_obra_model[1],tupla_obra_model[2], tupla_obra_model[3], tupla_obra_model[4], tupla_obra_model[5], tupla_obra_model[6], tupla_obra_model[7], tupla_obra_model[8], tupla_obra_model[9], tupla_obra_model[10], tupla_obra_model[11])              
                 inc_plazo_obra = str(input("Desea incrementar el plazo de la obra? S/N (Si o No): "))
                 if inc_plazo_obra == "S" or inc_plazo_obra =="s":
                     meses= int(input("Ingrese la cantidad de meses a agregar al plazo: "))
@@ -191,6 +211,10 @@ class Main(ABC):
 
             elif opcion == "6":
         #10
+                obj_obra_dao = Obra_DAO()
+                id = str(input("Ingrese el id de la obra a seleccionar: "))
+                tupla_obra_model = obj_obra_dao.obtener_registro(id)
+                obj_obra_model = Obra(tupla_obra_model[1],tupla_obra_model[2], tupla_obra_model[3], tupla_obra_model[4], tupla_obra_model[5], tupla_obra_model[6], tupla_obra_model[7], tupla_obra_model[8], tupla_obra_model[9], tupla_obra_model[10], tupla_obra_model[11])
                 agregar_imagenes = "S"
                 while agregar_imagenes == "S" or agregar_imagenes == "s":
                     agregar_imagenes = str(input("Desea agregar imagenes? S/N (Si o No): "))
@@ -198,11 +222,13 @@ class Main(ABC):
                         link_imagen = str(input("Ingrese el link de la imagen: "))
                         img = Imagen(link_imagen)
                         obj_obra_model.agregar_imagenes(img)
-                for item in obj_obra_model.imagenes:
-                    print(item.link_imagen)
 
             elif opcion == "7":
-        #11     
+        #11    
+                obj_obra_dao = Obra_DAO()
+                id = str(input("Ingrese el id de la obra a seleccionar: "))
+                tupla_obra_model = obj_obra_dao.obtener_registro(id)
+                obj_obra_model = Obra(tupla_obra_model[1],tupla_obra_model[2], tupla_obra_model[3], tupla_obra_model[4], tupla_obra_model[5], tupla_obra_model[6], tupla_obra_model[7], tupla_obra_model[8], tupla_obra_model[9], tupla_obra_model[10], tupla_obra_model[11])
                 extra_empleados = input("Desea ingresar nuevos empleados? S/N (Si o No): ")
                 if extra_empleados == "S" or extra_empleados == "s": 
                     cantidad = int(input("Ingrese la cantidad de nuevos empleados: "))
@@ -211,9 +237,19 @@ class Main(ABC):
 
             elif opcion == "8":
         #12
+                obj_obra_dao = Obra_DAO()
+                id = str(input("Ingrese el id de la obra a finalizar: "))
+                tupla_obra_model = obj_obra_dao.obtener_registro(id)
+                obj_obra_model = Obra(tupla_obra_model[1],tupla_obra_model[2], tupla_obra_model[3], tupla_obra_model[4], tupla_obra_model[5], tupla_obra_model[6], tupla_obra_model[7], tupla_obra_model[8], tupla_obra_model[9], tupla_obra_model[10], tupla_obra_model[11])
                 obj_obra_model.finalizar_obra()
                 print("La obra se finalizo")
-                print(obj_obra_model.etapa)
+                id_etapa = "100"
+                id_empresa = tupla_obra_model[17]
+                id_tipo_obra = tupla_obra_model[18]
+                id_area = tupla_obra_model[19]
+                id_barrio = tupla_obra_model[20]
+                id_tipo_contratacion = tupla_obra_model[21]
+                id_fuente_financiamiento = tupla_obra_model[22]
         #14
                 lista_id = (id_etapa,id_empresa,id_tipo_obra,id_area,id_barrio,id_tipo_contratacion,id_fuente_financiamiento)
                 insertar_ok = obj_obra_dao.insertar_registro(obj_obra_model, lista_id)
@@ -226,9 +262,21 @@ class Main(ABC):
 
             elif opcion == "9":
         #13
+                obj_obra_dao = Obra_DAO()
+                id = str(input("Ingrese el id de la obra a rescindir: "))
+                tupla_obra_model = obj_obra_dao.obtener_registro(id)
+                obj_obra_model = Obra(tupla_obra_model[1],tupla_obra_model[2], tupla_obra_model[3], tupla_obra_model[4], tupla_obra_model[5], tupla_obra_model[6], tupla_obra_model[7], tupla_obra_model[8], tupla_obra_model[9], tupla_obra_model[10], tupla_obra_model[11])  
                 obj_obra_model.rescindir_obra()
                 print("La obra se rescindio")
                 print(obj_obra_model.etapa)
+                id_etapa = tupla_obra_model[16]
+                id_empresa = tupla_obra_model[17]
+                id_tipo_obra = tupla_obra_model[18]
+                id_area = tupla_obra_model[19]
+                id_barrio = tupla_obra_model[20]
+                id_tipo_contratacion = tupla_obra_model[21]
+                id_fuente_financiamiento = tupla_obra_model[22]
+                
         #14
                 lista_id = (id_etapa,id_empresa,id_tipo_obra,id_area,id_barrio,id_tipo_contratacion,id_fuente_financiamiento)
                 insertar_ok = obj_obra_dao.insertar_registro(obj_obra_model, lista_id)
@@ -251,4 +299,4 @@ class Main(ABC):
                 obj_obra_dao.obras_fin_24meses_o_Menos()
         
 
-            fin = input("Desea seguir en la app? Si/No (S/N): ")
+            seguir = input("Desea seguir en la app? Si/No (S/N): ")

@@ -37,7 +37,6 @@ class GestionarModelo(ABC):
     @classmethod
     def listado_obra(cls,obj):
         cls.__listado_obras.append(obj)
-        print(cls.__listado_obras)
         
     @classmethod
     def nueva_etapa(cls,nombre) -> Etapa:

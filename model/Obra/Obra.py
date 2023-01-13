@@ -22,7 +22,7 @@ class Obra():
         self.tipo_contratacion = "SV"
         self.nro_contratacion = "SV"
         self.beneficiarios = beneficiarios
-        self.mano_obra = "SV"
+        self.mano_obra = 0
         self.destacada = "SV"
         self.expediente_numero = "SV"
         self.fuente_financiamiento = "SV"
