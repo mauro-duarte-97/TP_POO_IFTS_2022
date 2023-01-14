@@ -84,7 +84,7 @@ class TipoContratacion_DAO(DAO):
             cursor.execute(f"SELECT * FROM {self.nombre_tabla}")
             print(cursor.fetchall())
         except Exception as e:
-            print(f"Ocurrió un error al seleccionar todos los registros. {e}")
+            print(f"Ocurrió un error al seleccionar todos los registros. {e}/n")
         finally:
             db.close()
     

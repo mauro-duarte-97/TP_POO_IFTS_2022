@@ -82,7 +82,7 @@ class Area_DAO(DAO):
         try:
             db, cursor = self.conectar_bd()
             cursor.execute(f"SELECT * FROM {self.nombre_tabla}")
-            print(cursor.fetchall())
+            return cursor.fetchall()
         except Exception as e:
             print(f"Ocurrió un error al seleccionar todos los registros. {e}")
         finally:

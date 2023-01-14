@@ -63,16 +63,14 @@ class Obra_DAO(DAO):
             ,nro_contratacion,beneficiarios,mano_obra,destacada,expediente_numero
             ,id_etapa,id_empresa,id_tipo_obra,id_area,id_barrio,id_tipo_contratacion,id_fuente_financiamiento)
             VALUES
-            ('{objeto.entorno}','{objeto.nombre}','{objeto.descripcion}',{objeto.monto_contrato}
+            ('{objeto.entorno}','{objeto.nombre}','{objeto.descripcion}','{objeto.monto_contrato}'
             ,'{objeto.direccion}','{objeto.fecha_inicio}','{objeto.fecha_fin_inicial}'
-            ,{objeto.plazo_meses},{objeto.porcentaje_avance},{objeto.licitacion_anio}
+            ,'{objeto.plazo_meses}','{objeto.porcentaje_avance}','{objeto.licitacion_anio}'
             ,'{objeto.nro_contratacion}','{objeto.beneficiarios}','{objeto.mano_obra}'
-            ,{objeto.destacada},'{objeto.expediente_numero}',{lista_id[0]},{lista_id[1]},{lista_id[2]},{lista_id[3]},{lista_id[4]},{lista_id[5]},{lista_id[6]});'''
+            ,'{objeto.destacada}','{objeto.expediente_numero}',{lista_id[0]},{lista_id[1]},{lista_id[2]},{lista_id[3]},{lista_id[4]},{lista_id[5]},{lista_id[6]});'''
             cursor.execute(sql1)
             # Guardar (commit) los cambios
             db.commit()
-            print("El registro se ha insertado correctamente")
-            print(cursor.lastrowid)
             return cursor.lastrowid
         except Exception as e:
             print(f"Ocurrió un error al insertar un registro. {e}")
@@ -145,7 +143,9 @@ class Obra_DAO(DAO):
     def modificar_registro(self, objeto):
         try:
             db, cursor = self.conectar_bd()
-            cursor.execute(f"UPDATE {self.nombre_tabla} SET id_empresa ='{objeto.id}' WHERE id='{self.id}'",)
+            obj_etapa_dao = Etapa_DAO()
+            registro_etapa = obj_etapa_dao.obtener_registro(objeto.etapa)
+            cursor.execute(f"UPDATE {self.nombre_tabla} SET id_etapa ={registro_etapa[0]}, porcentaje_avance = '{objeto.porcentaje_avance}' WHERE id='{objeto.id}'")
             # Guardar (commit) los cambios
             db.commit()
             print(f"Los datos correspondientes a la obra {objeto.descripcion} se ha actualizado correctamente")
@@ -153,6 +153,7 @@ class Obra_DAO(DAO):
             print(f"Ocurrió un error al modificar los datos correspondientes a la obra {objeto.descripcion}. {e}")
         finally:
             db.close()
+
     
     def obtener_registros(self):
         try:
@@ -191,7 +192,11 @@ class Obra_DAO(DAO):
 #A 
     def listado_todas_areas(self):
         area = Area_DAO()
-        registros = area.seleccionar_todos_registros()
+        areas = area.seleccionar_todos_registros()
+        print('\n El listado de todas las areas es:\n')
+        for area in areas:
+            print(f'ID: {area[0]}\nArea: {area[1]}')
+        print('\n')
 
 #B     
     def listado_todos_tipo_obra(self):
@@ -202,21 +207,21 @@ class Obra_DAO(DAO):
     def cantidad_obras_x_etapa(self):
         db, cursor = self.conectar_bd()
         cursor.execute(''' SELECT id_etapa, count(*) FROM obras GROUP by id_etapa ''')
-        print(f"La cantidad de obras por etapa: {cursor.fetchall()}")
+        print(f"La cantidad de obras por etapa: {cursor.fetchall()} \n")
         db.close()
 
 #D  
     def cantidad_obras_x_tipo_obra(self):
         db, cursor = self.conectar_bd()
         cursor.execute(''' SELECT id_tipo_obra, count(*) FROM obras GROUP by id_tipo_obra ''')
-        print(f"Cantidad de obra por tipo de obra: {cursor.fetchall()}")
+        print(f"Cantidad de obra por tipo de obra: {cursor.fetchall()} \n")
         db.close()
 
 #E 
     def barrios_por_comuna_123(self):
         db, cursor = self.conectar_bd()
         cursor.execute('''SELECT nombre,nro_comuna FROM barrios WHERE nro_comuna IN (1,2,3) ORDER by nro_comuna''')
-        print(f"Barrios pertenecientes a la comuna 1,2,3:{cursor.fetchall()}")
+        print(f"Barrios pertenecientes a la comuna 1,2,3: {cursor.fetchall()} \n")
         db.close()
 
 #F
@@ -224,14 +229,14 @@ class Obra_DAO(DAO):
         db, cursor = self.conectar_bd()
         barrio = Barrio_DAO()
         cursor.execute('''SELECT count(*) FROM obras INNER JOIN barrios on barrios.id = obras.id_barrio where barrios.nro_comuna = 1 and obras.id_etapa = 1''')
-        print(f"La cantidad de obras Finalizadas en la comuna 1 es de:{cursor.fetchall()}")
+        print(f"La cantidad de obras Finalizadas en la comuna 1 es de: {cursor.fetchall()[0][0]} \n")
         db.close()
 
 #G
     def obras_fin_24meses_o_Menos(self):
         db, cursor = self.conectar_bd()
         cursor.execute('''SELECT COUNT(id) FROM obras WHERE plazo_meses <= 24 AND id_etapa = 1''')
-        print(f"La cantidad de obras Finalizadas en 24 meses o menos es de: {cursor.fetchall()}")
+        print(f"La cantidad de obras Finalizadas en 24 meses o menos es de: {cursor.fetchall()[0][0]} \n")
         db.close()
 
 

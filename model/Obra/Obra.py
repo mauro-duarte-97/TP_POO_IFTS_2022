@@ -5,7 +5,7 @@ class Obra():
        
         self.entorno = entorno
         self.nombre = nombre
-        self.etapa = "Proyecto"
+        self.etapa = etapa
         self.tipo_obra = tipo_obra
         self.area_responsable = area_responsable
         self.descripcion = descripcion
@@ -225,10 +225,11 @@ class Obra():
 
     #12
     def finalizar_obra(self):
-        self.etapa = "Finalizada"
+        self.etapa.finalizar()
         self.porcentaje_avance = "100"
 
     #13 
     def rescindir_obra(self):
-        self.etapa = "Rescindida"
+        self.etapa.rescindir()
+
     
