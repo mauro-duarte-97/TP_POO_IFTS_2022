@@ -171,10 +171,10 @@ class Main(ABC):
                     destacada = True
                 elif destacada == "N" or destacada == "n":
                     destacada = False
-                fecha_inicio = str(input("ingrese fecha de inicio d/m/Y H:M: "))
-                fecha_inicio = datetime.strptime(fecha_inicio, "%d/%m/%Y %H:%M")
-                fecha_fin = str(input("ingrese fecha de fin d/m/Y H:M: "))
-                fecha_fin = datetime.strptime(fecha_fin, "%d/%m/%Y %H:%M")
+                fecha_inicio = str(input("ingrese fecha de inicio d/m/Y: "))
+                fecha_inicio = datetime.strptime(fecha_inicio, "%d/%m/%Y")
+                fecha_fin = str(input("ingrese fecha de fin d/m/Y: "))
+                fecha_fin = datetime.strptime(fecha_fin, "%d/%m/%Y")
                 mano_obra = int(input("Ingrese la cantidad de mano de obra: "))
                 financiamiento = str(input("Ingrese fuente financiamiento: "))
                 obj_fuente_financiamiento_model = 0      
